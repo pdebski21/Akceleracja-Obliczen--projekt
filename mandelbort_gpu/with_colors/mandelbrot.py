@@ -1,6 +1,8 @@
-from math import log, log2
+from numba import jit, vectorize, int32, float32
+from numpy import log, log2
 
 
+@jit(nopython=True, cache=True)
 def mandelbrot(c, max_iter):
     z = 0
     n = 0
@@ -12,3 +14,4 @@ def mandelbrot(c, max_iter):
         return max_iter
 
     return n + 1 - log(log2(abs(z)))
+
