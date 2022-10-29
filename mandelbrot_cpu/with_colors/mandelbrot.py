@@ -19,23 +19,23 @@ def mandelbrot(c, max_iter):
     return n + 1 - log(log2(abs(z)))
 
 
-def draw_mandelbrot_set(MAX_ITER, WIDTH, HEIGHT, img_output_file):
-    im = Image.new('HSV', (WIDTH, HEIGHT), (0, 0, 0))
+def draw_mandelbrot_set(max_iter, width, height, img_output_file):
+    im = Image.new('HSV', (width, height), (0, 0, 0))
     draw = ImageDraw.Draw(im)
 
     start = time.time()
-    for x in range(0, WIDTH):
-        for y in range(0, HEIGHT):
-            c = complex(RE_START + (x / WIDTH) * (RE_END - RE_START),
-                        IM_START + (y / HEIGHT) * (IM_END - IM_START))
-            m = mandelbrot(c, MAX_ITER)
+    for x in range(0, width):
+        for y in range(0, height):
+            c = complex(RE_START + (x / width) * (RE_END - RE_START),
+                        IM_START + (y / height) * (IM_END - IM_START))
+            m = mandelbrot(c, max_iter)
 
-            hue = int(255 * m / MAX_ITER)
+            hue = int(255 * m / max_iter)
             saturation = 255
-            value = 255 if m < MAX_ITER else 0
+            value = 255 if m < max_iter else 0
             draw.point([x, y], (hue, saturation, value))
     end = time.time()
 
-    print(f'CPU version {MAX_ITER}: Elapsed = {(end-start)}')
+    print(f'CPU version {max_iter}: Elapsed = {(end-start)}')
     im.convert('RGB').save(img_output_file, 'PNG')
     return end-start

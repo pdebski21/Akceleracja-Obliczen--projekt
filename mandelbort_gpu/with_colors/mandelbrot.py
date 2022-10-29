@@ -26,37 +26,37 @@ def mandelbrot(c, max_iter):
 
 
 @jit(cache=True)
-def calc_mandelbrot(img, MAX_ITER, WIDTH, HEIGHT):
-    for x in prange(0, WIDTH):
-        for y in prange(0, HEIGHT):
-            c = complex(RE_START + (x / WIDTH) * (RE_END - RE_START),
-                        IM_START + (y / HEIGHT) * (IM_END - IM_START))
-            m = mandelbrot(c, MAX_ITER)
+def calc_mandelbrot(img, max_iter, width, height):
+    for x in prange(0, width):
+        for y in prange(0, height):
+            c = complex(RE_START + (x / width) * (RE_END - RE_START),
+                        IM_START + (y / height) * (IM_END - IM_START))
+            m = mandelbrot(c, max_iter)
 
-            img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * m / MAX_ITER), 255, 255 if m < MAX_ITER else 0
+            img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * m / max_iter), 255, 255 if m < max_iter else 0
 
     return img
 
 
-def draw_mandelbrot(draw, img, WIDTH, HEIGHT):
-    for x in range(0, WIDTH):
-        for y in range(0, HEIGHT):
+def draw_mandelbrot(draw, img, width, height):
+    for x in range(0, width):
+        for y in range(0, height):
             draw.point([x, y], (img[x][y][0], img[x][y][1], img[x][y][2]))
 
 
-def draw_mandelbrot_set(MAX_ITER, WIDTH, HEIGHT, img_output_file):
-    im = Image.new('HSV', (WIDTH, HEIGHT), (0, 0, 0))
+def draw_mandelbrot_set(max_iter, width, height, img_output_file):
+    im = Image.new('HSV', (width, height), (0, 0, 0))
     draw = ImageDraw.Draw(im)
     np.arange(0, 5, 0.5, dtype=int)
 
-    img = np.zeros((WIDTH, HEIGHT, CHANNELS), np.int32)
+    img = np.zeros((width, height, CHANNELS), np.int32)
 
     start = time.time()
-    calc_mandelbrot(img, MAX_ITER, WIDTH, HEIGHT)
+    calc_mandelbrot(img, max_iter, width, height)
     end = time.time()
 
-    print(f'GPU version {MAX_ITER}: Elapsed (with compilation) = {(end - start)}')
+    print(f'GPU version {max_iter}: Elapsed (with compilation) = {(end - start)}')
 
-    draw_mandelbrot(draw, img, WIDTH, HEIGHT)
+    draw_mandelbrot(draw, img, width, height)
     im.convert('RGB').save(img_output_file, 'PNG')
     return end - start
