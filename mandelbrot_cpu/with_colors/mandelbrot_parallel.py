@@ -1,4 +1,3 @@
-from numba import jit, vectorize, int32, float32
 from numpy import log, log2
 from PIL import Image, ImageDraw
 import time
