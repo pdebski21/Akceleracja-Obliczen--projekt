@@ -40,7 +40,7 @@ def calc_mandelbrot(img, max_iter, width, height):
     c = complex(creal, cim)
     z = complex(0, 0)
 
-    z = 0
+    # z = 0
     n = 0
     while abs(z) <= 2 and n < max_iter:
         z = z * z + c
@@ -49,8 +49,7 @@ def calc_mandelbrot(img, max_iter, width, height):
     if n == max_iter:
         m = max_iter
     else:
-        # m = n + 1 - log(log2(abs(z)))
-        m = n + 1 - math.log((math.log((abs(z)), 2)))
+        m = n + 1 - math.log(math.log(abs(z)))/math.log(2)
 
     img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * m / max_iter), 255, 255 if m < max_iter else 0
 
