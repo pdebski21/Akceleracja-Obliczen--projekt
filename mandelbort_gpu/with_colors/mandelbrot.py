@@ -31,7 +31,6 @@ def calc_mandelbrot(img, max_iter, width, height):
         else:
             m = n + 1 - math.log(math.log(abs(z)))/math.log(2)
             img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * m / max_iter), 255, 255 if m < max_iter else 0
-            break
 
 def draw_mandelbrot(draw, img, width, height):
     for x in range(0, width):
