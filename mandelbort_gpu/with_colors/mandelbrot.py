@@ -19,18 +19,15 @@ def calc_mandelbrot(img, max_iter, width, height):
     cim = IM_START + y / height * (IM_END - IM_START)
 
     c = complex(creal, cim)
-    z = 0
-    n = 0
-    while abs(z) <= 2 and n < max_iter:
-        z = z * z + c
-        n += 1
+    z = complex(0, 0)
 
-        if n == max_iter:
-            m = max_iter
-            img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * m / max_iter), 255, 255 if m < max_iter else 0
-        else:
-            m = n + 1 - math.log(math.log(abs(z)))/math.log(2)
-            img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * m / max_iter), 255, 255 if m < max_iter else 0
+    for n in range(max_iter):
+        z = z * z + c
+        # If unbounded: save iteration count and break
+        if z.real * z.real + z.imag * z.imag > 4.0:
+            # Smooth iteration count
+            img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * (n + 1 - math.log(math.log(abs(z)))/math.log(2)) / max_iter), 255, 255
+            break
 
 def draw_mandelbrot(draw, img, width, height):
     for x in range(0, width):
