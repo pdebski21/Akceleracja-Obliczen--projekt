@@ -37,6 +37,20 @@ def calc_mandelbrot(img, max_iter, width, height):
     return img
 
 
+@jit(cache=True, nopython=True, parallel=True)
+def calc_mandelbrot2(img, max_iter, width, height):
+    for x in prange(0, width):
+        for y in prange(0, height):
+            c = complex(RE_START + (x / width) * (RE_END - RE_START),
+                        IM_START + (y / height) * (IM_END - IM_START))
+            m = mandelbrot(c, max_iter)
+
+            img[x][y][0], img[x][y][1], img[x][y][2] = int(255 * m / max_iter), 255, 255 if m < max_iter else 0
+
+    return img
+
+
+
 def draw_mandelbrot(draw, img, width, height):
     for x in range(0, width):
         for y in range(0, height):
